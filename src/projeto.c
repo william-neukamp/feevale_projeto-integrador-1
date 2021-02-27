@@ -39,10 +39,6 @@ int fillNode(struct Log *node);
 // 8 - quebra a string baseado no parâmetro //
 char* split(char *str, int type);
 
-// 9 - verifica se um log pode ser adicionado a lista, se eh de fato um log de conexao ou desconexao de rede  //
-//int checkLog(char *str, char search[]);
-
-
 int main()
 {
     printf("Iniciando varredura, por favor, aguarde...\n");
@@ -229,9 +225,6 @@ struct Log* searchLog(struct Log* head, char *str){
 
 // 7 //
 int fillNode(struct Log *node){
-    // testes //
-    // abrir syslog, pegar as infos e passar para a estrutura //
-
     FILE *file;
     char line[99];
     //char *pline;
@@ -248,7 +241,6 @@ int fillNode(struct Log *node){
         return 0;
     }
 
-    // esse processo em log grande pode demorar a fuu //
     // le as linhas (512 bytes/caracteres) //
     int selfCount = 0;
     while (!feof(file)){
@@ -293,32 +285,15 @@ char* split(char *str, int type){
     // 1 -  timestamp
     // 2 -  user
     // 3 -  data
-
-    // conversao pra funcionar meu raciocionio //
     char *aux;
     char lstr[BUFFSIZE];	// TEM QUE SER DO TAMANHO DO BUFFER!!!
     strcpy(lstr, &*str);
-    // horrivel fazer manipulacao de stirng em C (ou eu que nao sei mesmo) //
     // data/hora //
     if (type == 1){
         char tmp[15];
         for (int i = 0; i <= 14; i++){
         	tmp[i] = lstr[i];
         }
-        /*aux = strtok(lstr, ":");
-        char tmp[20];
-        int i = 1;
-        while (aux != NULL && i <= 3){
-            if (i <= 3)
-                strcat(tmp, aux);
-            if (i <= 2)
-                strcat(tmp, ":");
-            if (i == 2)
-                aux = strtok(NULL, " ");
-            else if (i <= 2)
-                aux = strtok(NULL, ":");
-            ++i;
-    }*/
         char *result = tmp;
         return result;
     };
@@ -353,44 +328,3 @@ char* split(char *str, int type){
     char *result = "NOT FOUND";
     return result;
 };
-
-/**
-int checkLog(char *str, char search[]){
-    int count[strlen(str)];
-    int aux;
-    int result = 0;
-
-    char lstr[BUFFSIZE];
-    strcpy(lstr, &*str);
-
-    //char link[] = "NetworkManager";
-    //char link[] = "link";
-    char link[17];
-    strcpy(link, search);
-    for (int i = 0; i < strlen(lstr) - strlen(link); i++){
-        if (result == 1){
-            return result;
-        }
-        if (lstr[i] == link[0]){
-            for (int y = 0; y <= strlen(link); y++){
-                count[y] = 0;
-            }
-            aux = i;
-            for (int x = 0; x < strlen(link); x++){
-                if (link[x] == lstr[aux]){
-                    count[x] = 1;
-                    aux++;
-                }
-            }
-            for (int z = 0; z < strlen(link); z++){
-                if (count[z] == 0){
-                    result = 0;
-                }else{
-                    result = 1;
-                }
-            }
-        }
-    }
-    return 0;
-};
-**/
